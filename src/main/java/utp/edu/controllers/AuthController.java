@@ -15,7 +15,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody CredsDTO creds) {
         return usuarioService.authenticate(creds)
-                .map(usuario -> ResponseEntity.ok("Login successful"))
+                .map(usuario -> ResponseEntity.ok(usuario.getRol()))
                 .orElseGet(() -> ResponseEntity.status(401).body("Invalid credentials"));
     }
 
