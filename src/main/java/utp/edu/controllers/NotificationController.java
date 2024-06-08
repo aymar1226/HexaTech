@@ -12,6 +12,7 @@ public class NotificationController {
     @MessageMapping("/notify")
     @SendTo("/topic/notifications")
     public Notification notify(Notification notification) {
+
         return notification;
     }
 }
