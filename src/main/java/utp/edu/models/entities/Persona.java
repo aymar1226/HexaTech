@@ -23,4 +23,7 @@ public class Persona {
     private String ap_materno;
     private String documento;
     private String codigo;
+
+    public Persona(Long personaId) {
+    }
 }

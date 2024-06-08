@@ -25,4 +25,7 @@ public class Grupo {
     @ManyToOne
     @JoinColumn(name = "id_curso")
     private Curso curso;
+
+    public Grupo(Long grupoId) {
+    }
 }
