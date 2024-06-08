@@ -22,7 +22,4 @@ public class CursoController {
         return cursoService.getCursosByCod(codigo);
     }
 
-
-
-
 }

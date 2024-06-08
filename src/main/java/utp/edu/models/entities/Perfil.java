@@ -15,6 +15,7 @@ public class Perfil {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_perfil", nullable = false)
     private Long id;
+    private String descripcion;
     private String info_adicional;
 
     @OneToOne

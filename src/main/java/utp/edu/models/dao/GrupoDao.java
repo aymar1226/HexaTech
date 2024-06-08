@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Repository
 public interface GrupoDao extends JpaRepository<Grupo,Long> {
+
     @Query("SELECT g FROM Grupo g " +
             "JOIN MiembroGrupo mg ON g.id = mg.grupo.id " +
             "JOIN Persona p ON p.id = mg.persona.id " +

@@ -6,23 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "perfil_hobby")
+@Table(name = "notificacion")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PerfilHobby {
+public class Notificacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_perfil_hobby", nullable = false)
+    @Column(name = "id_notificacion", nullable = false)
     private Long id;
+    private String mensaje;
 
     @ManyToOne
-    @JoinColumn(name = "id_perfil")
-    private Perfil perfil;
-
-    @ManyToOne
-    @JoinColumn(name = "id_hobby")
-    private Hobby hobby;
-
+    @JoinColumn(name = "id_persona")
+    private Persona persona;
 }

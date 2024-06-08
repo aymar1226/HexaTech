@@ -22,6 +22,5 @@ public class PersonaController {
     public List<Persona> getPersonasByCurso(@PathVariable Long idCurso) {
         System.out.println(personaService.getPersonasByCurso(idCurso));
         return personaService.getPersonasByCurso(idCurso);
-
     }
 }

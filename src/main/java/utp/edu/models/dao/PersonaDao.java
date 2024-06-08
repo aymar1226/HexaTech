@@ -18,7 +18,6 @@ public interface PersonaDao extends JpaRepository<Persona,Long> {
             "WHERE c.id = :idCurso")
     List<Persona> getPersonasByCurso(@Param("idCurso") Long idCurso);
 
-
     @Query("SELECT p FROM Persona p " +
             "WHERE p.codigo = :codigo")
     Optional<Persona> findPersonaByCod(@Param("codigo") String codigo);
