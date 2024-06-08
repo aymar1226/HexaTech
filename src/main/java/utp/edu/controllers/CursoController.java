@@ -18,7 +18,7 @@ public class CursoController {
     private ICursoService cursoService;
 
     @GetMapping("/lista/{codigo}")
-    public List<Curso> getCursosByCorreo(@PathVariable String codigo) {
+    public List<Curso> getCursosByCod(@PathVariable String codigo) {
         return cursoService.getCursosByCod(codigo);
     }
 

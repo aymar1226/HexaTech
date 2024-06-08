@@ -24,14 +24,13 @@ public interface GrupoDao extends JpaRepository<Grupo,Long> {
     List<Grupo> getGruposByCodPersona(@Param("codigo") String codigoPersona);
 
     @Modifying
-    @Query("DELETE mg FROM MiembroGrupo mg " +
-            "WHERE mg.persona.codigo = :codigo AND mg.grupo.id = :idGrupo")
+    @Query("DELETE FROM MiembroGrupo mg WHERE mg.persona.codigo = :codigo AND mg.grupo.id = :idGrupo")
     @Transactional
     void deleteMiembro(@Param("codigo") String codigoPersona, @Param("idGrupo") Long idGrupo);
 
     @Query("SELECT mg FROM MiembroGrupo mg " +
-            "JOIN MiembroGrupo mg ON g.id = mg.grupo.id " +
-            "JOIN Persona p ON p.id = mg.persona.id " +
+            "JOIN mg.persona p " +
+            "JOIN mg.grupo g " +
             "WHERE p.codigo = :codigo AND g.id = :idGrupo")
     Optional<MiembroGrupo> findMiembro(@Param("codigo") String codigoPersona, @Param("idGrupo") Long idGrupo);
 
