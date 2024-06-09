@@ -15,6 +15,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
     @Override
     public Optional<Usuario> authenticate(CredsDTO creds) {
+
         String codigo=creds.getCodUsuario();
         String password=creds.getPassword();
         return usuarioDao.findByPersonaCodigoAndPassword(codigo,password);

@@ -21,5 +21,4 @@ public class Curso {
     @Column(name = "cod_curso")
     private String codigo;
 
-
 }

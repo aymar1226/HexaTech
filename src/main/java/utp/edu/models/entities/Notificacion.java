@@ -19,6 +19,6 @@ public class Notificacion {
     private String mensaje;
 
     @ManyToOne
-    @JoinColumn(name = "id_persona")
-    private Persona persona;
+    @JoinColumn(name = "id_grupo")
+    private Grupo grupo;
 }
