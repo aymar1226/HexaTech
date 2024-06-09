@@ -106,6 +106,21 @@ public class GrupoServiceImpl implements IGrupoService {
     }
 
     @Override
+    public MiembroGrupo agregarMiembroAlGrupo(MiembroDTO miembroDTO) {
+        Optional<Persona> personaMiembro = personaDao.findPersonaByCod(miembroDTO.getCodMiembro());
+        if (personaMiembro.isPresent()) {
+            MiembroGrupo nuevoMiembro = new MiembroGrupo();
+            nuevoMiembro.setEs_lider(false);
+            nuevoMiembro.setGrupo(grupoDao.findById(miembroDTO.getIdGrupo()).get());
+            nuevoMiembro.setPersona(personaMiembro.get());
+            nuevoMiembro.setRol("Estudiante");
+
+            return miembroGrupoDao.save(nuevoMiembro);
+        }
+        throw new RuntimeException("El miembro con código " + miembroDTO.getCodMiembro() + " no se pudo encontrar");
+    }
+
+    @Override
     public MiembroGrupo updateMiembro(UpdateMiembroDTO updateMiembroDTO) {
         String codigo = updateMiembroDTO.getCodigoUsuario();
         Long idGrupo = updateMiembroDTO.getIdGrupo();

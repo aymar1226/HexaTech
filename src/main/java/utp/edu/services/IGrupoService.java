@@ -15,6 +15,7 @@ public interface IGrupoService {
     public Grupo crearGrupo(CrearGrupoDTO grupoDTO);
     public void deleteMiembro(MiembroDTO miembroDTO);
     public MiembroGrupo updateMiembro(UpdateMiembroDTO updateMiembroDTO);
+    public MiembroGrupo agregarMiembroAlGrupo(MiembroDTO miembroDTO);
 
     String getRolInGroup(Long grupoId, String codigoPersona);
 

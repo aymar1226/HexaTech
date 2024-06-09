@@ -36,6 +36,19 @@ public class GrupoController {
         }
     }
 
+    @PostMapping("agregar/miembro")
+    public ResponseEntity<MiembroGrupo> agregarMiembroAlGrupo(@RequestBody MiembroDTO miembroDTO){
+        System.out.println(miembroDTO);
+        try {
+            miembroDTO.setIdGrupo(miembroDTO.getIdGrupo());
+            MiembroGrupo miembroAgregado = grupoService.agregarMiembroAlGrupo(miembroDTO);
+            return new ResponseEntity<>(miembroAgregado, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     @DeleteMapping("/eliminar/miembro")
     public ResponseEntity<Void> eliminarMiembro(@RequestBody MiembroDTO miembroDTO){
         try {
