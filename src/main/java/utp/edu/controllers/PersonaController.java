@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import utp.edu.models.dto.PersonaDTO;
 import utp.edu.models.entities.Persona;
 import utp.edu.services.IPersonaService;
 
@@ -25,9 +26,10 @@ public class PersonaController {
     }
 
     @GetMapping("/lista/grupos/{idGrupo}")
-    public List<Persona> getPersonasByGrupo(@PathVariable Long idGrupo) {
+    public List<PersonaDTO> getPersonasByGrupo(@PathVariable Long idGrupo) {
         System.out.println(personaService.getPersonasByGrupo(idGrupo));
         return personaService.getPersonasByGrupo(idGrupo);
     }
+
 
 }

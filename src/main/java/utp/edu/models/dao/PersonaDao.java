@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import utp.edu.models.dto.InfoDTO;
+import utp.edu.models.dto.PersonaDTO;
 import utp.edu.models.entities.Curso;
 import utp.edu.models.entities.Persona;
 
@@ -22,11 +24,10 @@ public interface PersonaDao extends JpaRepository<Persona,Long> {
             "WHERE p.codigo = :codigo")
     Optional<Persona> findPersonaByCod(@Param("codigo") String codigo);
 
-    @Query("SELECT p FROM Persona p " +
-            "JOIN MiembroGrupo mg ON p.id = mg.persona.id " +
+    @Query("SELECT new utp.edu.models.dto.PersonaDTO(p.nombres, p.ap_paterno, p.ap_materno, p.codigo, mg.rol) " +
+            "FROM MiembroGrupo mg JOIN mg.persona p " +
             "WHERE mg.grupo.id = :idGrupo")
-    List<Persona> getPersonasByGrupo(@Param("idGrupo") Long idGrupo);
-
+    List<PersonaDTO> getPersonasByGrupo(@Param("idGrupo") Long idGrupo);
 
 
 }

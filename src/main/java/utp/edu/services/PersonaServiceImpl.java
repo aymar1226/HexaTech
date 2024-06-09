@@ -3,6 +3,7 @@ package utp.edu.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utp.edu.models.dao.PersonaDao;
+import utp.edu.models.dto.PersonaDTO;
 import utp.edu.models.entities.Persona;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class PersonaServiceImpl implements IPersonaService{
     }
 
     @Override
-    public List<Persona> getPersonasByGrupo(Long idGrupo) {
+    public List<PersonaDTO> getPersonasByGrupo(Long idGrupo) {
         return personaDao.getPersonasByGrupo(idGrupo);
     }
 }
