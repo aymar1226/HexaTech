@@ -4,13 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CrearGrupoDTO {
 
+    private String codigoUsuario; // Código del líder
     private Long idCurso;
     private String nombregrupo;
-    private String codigoUsuario;
+    private List<String> codigosMiembros;
 
 }

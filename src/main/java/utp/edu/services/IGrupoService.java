@@ -11,8 +11,8 @@ import java.util.List;
 public interface IGrupoService {
 
     public List<Grupo> getGruposByCodPersona(String codigoPersona);
+
     public Grupo crearGrupo(CrearGrupoDTO grupoDTO);
-    public MiembroGrupo agregarMiembro(MiembroDTO miembroDTO);
     public void deleteMiembro(MiembroDTO miembroDTO);
     public MiembroGrupo updateMiembro(UpdateMiembroDTO updateMiembroDTO);
 

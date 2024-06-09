@@ -15,7 +15,6 @@ import utp.edu.models.dto.UpdateMiembroDTO;
 import utp.edu.models.entities.Grupo;
 import utp.edu.models.entities.MiembroGrupo;
 import utp.edu.models.entities.Persona;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -39,47 +38,58 @@ public class GrupoServiceImpl implements IGrupoService {
     public List<Grupo> getGruposByCodPersona(String codigoPersona) {
         return grupoDao.getGruposByCodPersona(codigoPersona);
     }
-
     @Override
     public Grupo crearGrupo(CrearGrupoDTO grupoDTO) {
         Optional<Persona> personaLider = personaDao.findPersonaByCod(grupoDTO.getCodigoUsuario());
 
-        if(personaLider.isPresent()){
+        if (personaLider.isPresent()) {
             Grupo nuevoGrupo = new Grupo();
 
-            //Guardar grupo
+            // Guardar grupo
             LocalDateTime now = LocalDateTime.now();
             nuevoGrupo.setFecha_creacion(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()));
             nuevoGrupo.setCurso(cursoDao.findById(grupoDTO.getIdCurso()).get());
             nuevoGrupo.setNombre(grupoDTO.getNombregrupo());
-            Grupo grupoguardado = grupoDao.save(nuevoGrupo);
+            Grupo grupoGuardado = grupoDao.save(nuevoGrupo);
 
+            // Guardar líder del grupo
+            MiembroGrupo lider = new MiembroGrupo();
+            lider.setEs_lider(true);
+            lider.setGrupo(grupoGuardado);
+            lider.setPersona(personaLider.get());
+            lider.setRol("Lider");
+            miembroGrupoDao.save(lider);
 
-            //Guardar usuario actual
-            MiembroGrupo nuevomiembro = new MiembroGrupo();
-            nuevomiembro.setEs_lider(true);
-            nuevomiembro.setGrupo(nuevoGrupo);
-            nuevomiembro.setPersona(personaLider.get());
-            nuevomiembro.setRol("Lider");
+            // Guardar miembros del grupo
+            if (grupoDTO.getCodigosMiembros() != null) {
+                for (String codigoMiembro : grupoDTO.getCodigosMiembros()) {
+                    Optional<Persona> personaMiembro = personaDao.findPersonaByCod(codigoMiembro);
 
-            miembroGrupoDao.save(nuevomiembro);
-            return grupoguardado;
+                    if (personaMiembro.isPresent() && personaMiembro.get()!=personaLider.get()) {
+                        MiembroGrupo nuevoMiembro = new MiembroGrupo();
+                        nuevoMiembro.setEs_lider(false);
+                        nuevoMiembro.setGrupo(grupoGuardado);
+                        nuevoMiembro.setPersona(personaMiembro.get());
+                        nuevoMiembro.setRol("Estudiante");
+
+                        miembroGrupoDao.save(nuevoMiembro);
+                    } else {
+                        // Puedes manejar esto de diferentes maneras, por ejemplo:
+                        // 1. Lanzar una excepción (esto detendría todo el proceso)
+                        // throw new RuntimeException("El miembro con código " + codigoMiembro + " no se pudo encontrar");
+
+                        // 2. Registrar un error y continuar con los otros miembros
+                        System.err.println("El miembro con código " + codigoMiembro + " no se pudo encontrar. Se omitirá.");
+                        // También podrías usar un logger en lugar de System.err
+                    }
+                }
+            }
+
+            return grupoGuardado;
         }
-        throw new RuntimeException("El usuario no se pudo encontrar") ;
+        throw new RuntimeException("El usuario líder no se pudo encontrar");
     }
 
-    @Override
-    public MiembroGrupo agregarMiembro(MiembroDTO miembroDTO) {
-
-        MiembroGrupo nuevomiembro = new MiembroGrupo();
-        nuevomiembro.setEs_lider(false);
-        nuevomiembro.setGrupo(grupoDao.findById(miembroDTO.getIdGrupo()).get());
-        nuevomiembro.setPersona(personaDao.findPersonaByCod(miembroDTO.getCodMiembro()).get());
-        nuevomiembro.setRol("Estudiante");
-
-        return miembroGrupoDao.save(nuevomiembro);
-
-    }
 
     @Override
     public void deleteMiembro(MiembroDTO miembroDTO) {
