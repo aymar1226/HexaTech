@@ -23,4 +23,5 @@ public class PersonaServiceImpl implements IPersonaService{
     public List<PersonaDTO> getPersonasByGrupo(Long idGrupo) {
         return personaDao.getPersonasByGrupo(idGrupo);
     }
+
 }

@@ -38,6 +38,8 @@ public class GrupoServiceImpl implements IGrupoService {
     public List<Grupo> getGruposByCodPersona(String codigoPersona) {
         return grupoDao.getGruposByCodPersona(codigoPersona);
     }
+
+
     @Override
     public Grupo crearGrupo(CrearGrupoDTO grupoDTO) {
         Optional<Persona> personaLider = personaDao.findPersonaByCod(grupoDTO.getCodigoUsuario());
@@ -117,5 +119,9 @@ public class GrupoServiceImpl implements IGrupoService {
         }
     }
 
-
+    @Override
+    public String getRolInGroup(Long grupoId, String codigoPersona) {
+        MiembroGrupo miembro = grupoDao.findMiembroByCodigoPersonaAndGrupoId(codigoPersona, grupoId);
+        return miembro != null ? miembro.getRol() : "No Asignado";
+    }
 }

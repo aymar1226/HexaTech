@@ -35,4 +35,12 @@ public interface GrupoDao extends JpaRepository<Grupo,Long> {
             "WHERE p.codigo = :codigo AND g.id = :idGrupo")
     Optional<MiembroGrupo> findMiembro(@Param("codigo") String codigoPersona, @Param("idGrupo") Long idGrupo);
 
+
+    @Query("SELECT mg.rol FROM MiembroGrupo mg " +
+            "JOIN mg.persona p " +
+            "WHERE mg.grupo.id = :grupoId AND p.codigo = :codigoPersona")
+    String getRolInGroup(@Param("grupoId") Long grupoId, @Param("codigoPersona") String codigoPersona);
+
+    @Query("SELECT mg FROM MiembroGrupo mg JOIN mg.persona p JOIN mg.grupo g WHERE p.codigo = :codigoPersona AND g.id = :grupoId")
+    MiembroGrupo findMiembroByCodigoPersonaAndGrupoId(@Param("codigoPersona") String codigoPersona, @Param("grupoId") Long grupoId);
 }

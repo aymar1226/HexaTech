@@ -11,7 +11,9 @@ import utp.edu.models.entities.Grupo;
 import utp.edu.models.entities.MiembroGrupo;
 import utp.edu.services.IGrupoService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/grupo")
@@ -52,6 +54,14 @@ public class GrupoController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/rol/{grupoId}/{codigoPersona}")
+    public ResponseEntity<Map<String, String>> getRolInGroup(@PathVariable Long grupoId, @PathVariable String codigoPersona) {
+        String rol = grupoService.getRolInGroup(grupoId, codigoPersona);
+        Map<String, String> response = new HashMap<>();
+        response.put("rol", rol);
+        return ResponseEntity.ok(response);
     }
 
 }
