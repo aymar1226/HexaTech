@@ -33,43 +33,10 @@ public class MensajeConversacionGrupal {
     @Column(name = "f_envio")
     private Date fechaEnvio;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public ConversacionGrupal getConversacionGrupal() {
-        return conversacionGrupal;
-    }
-
-    public void setConversacionGrupal(ConversacionGrupal conversacionGrupal) {
+    public MensajeConversacionGrupal(ConversacionGrupal conversacionGrupal, Persona persona, String mensaje) {
         this.conversacionGrupal = conversacionGrupal;
-    }
-
-    public Persona getPersona() {
-        return persona;
-    }
-
-    public void setPersona(Persona persona) {
         this.persona = persona;
-    }
-
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
-    }
-
-    public Date getFechaEnvio() {
-        return fechaEnvio;
-    }
-
-    public void setFechaEnvio(Date fechaEnvio) {
-        this.fechaEnvio = fechaEnvio;
+        this.fechaEnvio = new Date();
     }
 }

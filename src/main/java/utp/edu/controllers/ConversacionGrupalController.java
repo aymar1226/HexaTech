@@ -25,4 +25,14 @@ public class ConversacionGrupalController {
     public ResponseEntity<List<MensajeConversacionGrupal>> obtenerMensajes(@PathVariable Long conversacionId) {
         return ResponseEntity.ok(conversacionGrupalService.obtenerMensajes(conversacionId));
     }
+
+    @GetMapping("/grupo/{grupoId}")
+    public ResponseEntity<ConversacionGrupal> obtenerConversacionPorGrupo(@PathVariable Long grupoId) {
+        ConversacionGrupal conversacion = conversacionGrupalService.obtenerConversacionPorGrupo(grupoId);
+        if (conversacion != null) {
+            return ResponseEntity.ok(conversacion);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

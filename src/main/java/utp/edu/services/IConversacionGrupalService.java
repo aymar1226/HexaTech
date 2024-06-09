@@ -9,4 +9,5 @@ public interface IConversacionGrupalService {
     ConversacionGrupal iniciarConversacion(Long id_grupo);
     List<MensajeConversacionGrupal> obtenerMensajes(Long id_conversacion_grupal);
     MensajeConversacionGrupal enviarMensaje(Long id_conversacion_grupal, String codigoPersona, String mensaje);
+    ConversacionGrupal obtenerConversacionPorGrupo(Long grupoId);  // Nuevo método
 }

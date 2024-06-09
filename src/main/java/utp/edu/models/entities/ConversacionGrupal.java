@@ -30,38 +30,8 @@ public class ConversacionGrupal {
     @JsonManagedReference
     private List<MensajeConversacionGrupal> mensajes;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Grupo getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Grupo grupo) {
+    public ConversacionGrupal(Grupo grupo) {
         this.grupo = grupo;
-    }
-
-    public Date getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(Date fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public List<MensajeConversacionGrupal> getMensajes() {
-        return mensajes;
-    }
-
-    public void setMensajes(List<MensajeConversacionGrupal> mensajes) {
-        this.mensajes = mensajes;
-    }
-
-    public ConversacionGrupal(Long id_conversacion_grupal) {
+        this.fechaInicio = new Date();
     }
 }

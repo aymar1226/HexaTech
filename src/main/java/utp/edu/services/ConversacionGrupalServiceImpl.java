@@ -32,6 +32,11 @@ public class ConversacionGrupalServiceImpl implements IConversacionGrupalService
 
     @Override
     public ConversacionGrupal iniciarConversacion(Long grupoId) {
+        Optional<ConversacionGrupal> conversacionExistente = conversacionGrupalDao.findByGrupoId(grupoId);
+        if (conversacionExistente.isPresent()) {
+            return conversacionExistente.get();
+        }
+
         Optional<Grupo> grupoOpt = grupoDao.findById(grupoId);
         if (grupoOpt.isPresent()) {
             ConversacionGrupal conversacion = new ConversacionGrupal();
@@ -63,5 +68,10 @@ public class ConversacionGrupalServiceImpl implements IConversacionGrupalService
         } else {
             throw new IllegalArgumentException("Conversacion grupal o persona no encontrada");
         }
+    }
+
+    @Override
+    public ConversacionGrupal obtenerConversacionPorGrupo(Long grupoId) {
+        return conversacionGrupalDao.findByGrupoId(grupoId).orElse(null);
     }
 }
