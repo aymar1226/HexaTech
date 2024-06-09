@@ -1,20 +1,18 @@
 package utp.edu.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import utp.edu.models.dao.CursoDao;
 import utp.edu.models.dao.GrupoDao;
 import utp.edu.models.dao.MiembroGrupoDao;
 import utp.edu.models.dao.PersonaDao;
-import utp.edu.models.dto.MiembroDTO;
 import utp.edu.models.dto.CrearGrupoDTO;
+import utp.edu.models.dto.MiembroDTO;
 import utp.edu.models.dto.UpdateMiembroDTO;
 import utp.edu.models.entities.Grupo;
 import utp.edu.models.entities.MiembroGrupo;
 import utp.edu.models.entities.Persona;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -29,16 +27,20 @@ public class GrupoServiceImpl implements IGrupoService {
 
     @Autowired
     private PersonaDao personaDao;
+
     @Autowired
     private MiembroGrupoDao miembroGrupoDao;
+
     @Autowired
     private CursoDao cursoDao;
+
+    @Autowired
+    private IConversacionGrupalService conversacionGrupalService;
 
     @Override
     public List<Grupo> getGruposByCodPersona(String codigoPersona) {
         return grupoDao.getGruposByCodPersona(codigoPersona);
     }
-
 
     @Override
     public Grupo crearGrupo(CrearGrupoDTO grupoDTO) {
@@ -67,7 +69,7 @@ public class GrupoServiceImpl implements IGrupoService {
                 for (String codigoMiembro : grupoDTO.getCodigosMiembros()) {
                     Optional<Persona> personaMiembro = personaDao.findPersonaByCod(codigoMiembro);
 
-                    if (personaMiembro.isPresent() && personaMiembro.get()!=personaLider.get()) {
+                    if (personaMiembro.isPresent() && !personaMiembro.get().equals(personaLider.get())) {
                         MiembroGrupo nuevoMiembro = new MiembroGrupo();
                         nuevoMiembro.setEs_lider(false);
                         nuevoMiembro.setGrupo(grupoGuardado);
@@ -76,32 +78,28 @@ public class GrupoServiceImpl implements IGrupoService {
 
                         miembroGrupoDao.save(nuevoMiembro);
                     } else {
-                        // Puedes manejar esto de diferentes maneras, por ejemplo:
-                        // 1. Lanzar una excepción (esto detendría todo el proceso)
-                        // throw new RuntimeException("El miembro con código " + codigoMiembro + " no se pudo encontrar");
-
-                        // 2. Registrar un error y continuar con los otros miembros
                         System.err.println("El miembro con código " + codigoMiembro + " no se pudo encontrar. Se omitirá.");
-                        // También podrías usar un logger en lugar de System.err
                     }
                 }
             }
+
+            // Crear conversación grupal asociada
+            conversacionGrupalService.iniciarConversacion(grupoGuardado.getId());
 
             return grupoGuardado;
         }
         throw new RuntimeException("El usuario líder no se pudo encontrar");
     }
 
-
     @Override
     public void deleteMiembro(MiembroDTO miembroDTO) {
         Optional<Persona> miembroEncontrado = personaDao.findPersonaByCod(miembroDTO.getCodMiembro());
-        if(miembroEncontrado.isPresent()){
+        if (miembroEncontrado.isPresent()) {
             String codigo = miembroDTO.getCodMiembro();
             Long idGrupo = miembroDTO.getIdGrupo();
-            grupoDao.deleteMiembro(codigo,idGrupo);
-        }else {
-            throw new RuntimeException("El miembro a eliminar no se pudo encontrar") ;
+            grupoDao.deleteMiembro(codigo, idGrupo);
+        } else {
+            throw new RuntimeException("El miembro a eliminar no se pudo encontrar");
         }
     }
 
@@ -124,13 +122,13 @@ public class GrupoServiceImpl implements IGrupoService {
     public MiembroGrupo updateMiembro(UpdateMiembroDTO updateMiembroDTO) {
         String codigo = updateMiembroDTO.getCodigoUsuario();
         Long idGrupo = updateMiembroDTO.getIdGrupo();
-        Optional<MiembroGrupo> miembroEncontrado = grupoDao.findMiembro(codigo,idGrupo);
-        if(miembroEncontrado.isPresent()){
-            MiembroGrupo miembro=miembroEncontrado.get();
+        Optional<MiembroGrupo> miembroEncontrado = grupoDao.findMiembro(codigo, idGrupo);
+        if (miembroEncontrado.isPresent()) {
+            MiembroGrupo miembro = miembroEncontrado.get();
             miembro.setRol(updateMiembroDTO.getRolGrupo());
             return miembroGrupoDao.save(miembro);
-        }else{
-            throw new RuntimeException("El miembro a modificar no se pudo encontrar") ;
+        } else {
+            throw new RuntimeException("El miembro a modificar no se pudo encontrar");
         }
     }
 
