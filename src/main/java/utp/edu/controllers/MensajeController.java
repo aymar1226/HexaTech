@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import utp.edu.models.entities.MensajeConversacionGrupal;
@@ -14,24 +15,31 @@ public class MensajeController {
 
     @Autowired
     private IConversacionGrupalService conversacionGrupalService;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/enviarMensaje")
-    @SendTo("/topic/mensajes")
-    public MensajeConversacionGrupal enviarMensajeWebSocket(MensajeRequest mensajeRequest) {
-        return conversacionGrupalService.enviarMensaje(
+    public void enviarMensajeWebSocket(MensajeRequest mensajeRequest) {
+        MensajeConversacionGrupal mensaje = conversacionGrupalService.enviarMensaje(
                 mensajeRequest.getConversacionId(),
                 mensajeRequest.getCodigoPersona(),
                 mensajeRequest.getMensaje()
         );
+
+        // Solo enviamos el mensaje si se guardó correctamente
+        if (mensaje != null) {
+            messagingTemplate.convertAndSend("/topic/mensajes/" + mensajeRequest.getConversacionId(), mensaje);
+        }
     }
 
     @PostMapping("/api/conversacion/enviar")
     public ResponseEntity<MensajeConversacionGrupal> enviarMensajeRest(@RequestBody MensajeRequest mensajeRequest) {
-        return ResponseEntity.ok(conversacionGrupalService.enviarMensaje(
+        MensajeConversacionGrupal mensaje = conversacionGrupalService.enviarMensaje(
                 mensajeRequest.getConversacionId(),
                 mensajeRequest.getCodigoPersona(),
                 mensajeRequest.getMensaje()
-        ));
+        );
+        return ResponseEntity.ok(mensaje);
     }
 
     public static class MensajeRequest {
@@ -40,7 +48,6 @@ public class MensajeController {
         private String mensaje;
 
         // Getters y Setters
-
         public Long getConversacionId() {
             return conversacionId;
         }

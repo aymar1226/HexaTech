@@ -39,8 +39,7 @@ public class ConversacionGrupalServiceImpl implements IConversacionGrupalService
 
         Optional<Grupo> grupoOpt = grupoDao.findById(grupoId);
         if (grupoOpt.isPresent()) {
-            ConversacionGrupal conversacion = new ConversacionGrupal();
-            conversacion.setGrupo(grupoOpt.get());
+            ConversacionGrupal conversacion = new ConversacionGrupal(grupoOpt.get());
             conversacion.setFechaInicio(new Date());
             return conversacionGrupalDao.save(conversacion);
         } else {
@@ -59,11 +58,7 @@ public class ConversacionGrupalServiceImpl implements IConversacionGrupalService
         Optional<Persona> personaOpt = personaDao.findPersonaByCod(codigoPersona);
 
         if (conversacionOpt.isPresent() && personaOpt.isPresent()) {
-            MensajeConversacionGrupal nuevoMensaje = new MensajeConversacionGrupal();
-            nuevoMensaje.setConversacionGrupal(conversacionOpt.get());
-            nuevoMensaje.setPersona(personaOpt.get());
-            nuevoMensaje.setMensaje(mensaje);
-            nuevoMensaje.setFechaEnvio(new Date());
+            MensajeConversacionGrupal nuevoMensaje = new MensajeConversacionGrupal(conversacionOpt.get(), personaOpt.get(), mensaje);
             return mensajeConversacionGrupalDao.save(nuevoMensaje);
         } else {
             throw new IllegalArgumentException("Conversacion grupal o persona no encontrada");
