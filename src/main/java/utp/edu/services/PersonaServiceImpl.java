@@ -17,4 +17,9 @@ public class PersonaServiceImpl implements IPersonaService{
     public List<Persona> getPersonasByCurso(Long idCurso) {
         return personaDao.getPersonasByCurso(idCurso);
     }
+
+    @Override
+    public List<Persona> getPersonasByGrupo(Long idGrupo) {
+        return personaDao.getPersonasByGrupo(idGrupo);
+    }
 }

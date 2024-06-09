@@ -7,5 +7,6 @@ import java.util.List;
 public interface IPersonaService {
 
     public List<Persona> getPersonasByCurso(Long idCurso);
+    public List<Persona> getPersonasByGrupo(Long idGrupo);
 
 }

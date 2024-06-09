@@ -22,4 +22,11 @@ public interface PersonaDao extends JpaRepository<Persona,Long> {
             "WHERE p.codigo = :codigo")
     Optional<Persona> findPersonaByCod(@Param("codigo") String codigo);
 
+    @Query("SELECT p FROM Persona p " +
+            "JOIN MiembroGrupo mg ON p.id = mg.persona.id " +
+            "WHERE mg.grupo.id = :idGrupo")
+    List<Persona> getPersonasByGrupo(@Param("idGrupo") Long idGrupo);
+
+
+
 }

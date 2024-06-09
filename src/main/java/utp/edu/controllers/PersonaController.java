@@ -18,9 +18,16 @@ public class PersonaController {
     private IPersonaService personaService;
 
 
-    @GetMapping("/lista/{idCurso}")
+    @GetMapping("/lista/cursos/{idCurso}")
     public List<Persona> getPersonasByCurso(@PathVariable Long idCurso) {
         System.out.println(personaService.getPersonasByCurso(idCurso));
         return personaService.getPersonasByCurso(idCurso);
     }
+
+    @GetMapping("/lista/grupos/{idGrupo}")
+    public List<Persona> getPersonasByGrupo(@PathVariable Long idGrupo) {
+        System.out.println(personaService.getPersonasByGrupo(idGrupo));
+        return personaService.getPersonasByGrupo(idGrupo);
+    }
+
 }
