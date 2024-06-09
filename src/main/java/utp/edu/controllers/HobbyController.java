@@ -20,21 +20,26 @@ public class HobbyController {
 
     @GetMapping("/lista/{codigo}")
     public List<Hobby> listHobbiesByCod(@PathVariable String codigo) {
-
         return hobbyService.listHobbiesByCod(codigo);
-
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<PerfilHobby> crearHobby(@RequestBody CrearHobbyDTO crearHobbyDTO){
-
+    public ResponseEntity<PerfilHobby> crearHobby(@RequestBody CrearHobbyDTO crearHobbyDTO) {
         try {
             PerfilHobby nuevoHobby = hobbyService.crearHobby(crearHobbyDTO);
             return new ResponseEntity<>(nuevoHobby, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
+    @DeleteMapping("/eliminar/{idPerfilHobby}")
+    public ResponseEntity<Void> eliminarHobby(@PathVariable Long idPerfilHobby) {
+        try {
+            hobbyService.deletePerfilHobby(idPerfilHobby);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface PerfilDao extends JpaRepository<Perfil,Long> {
 
-    @Query("SELECT new utp.edu.models.dto.InfoDTO(pf.info_adicional, pf.descripcion) FROM Perfil pf " +
+    @Query("SELECT new utp.edu.models.dto.InfoDTO(p.nombres, p.ap_paterno, p.ap_materno, pf.info_adicional, pf.descripcion) FROM Perfil pf " +
             "JOIN Persona p ON p.id = pf.persona.id " +
             "WHERE p.codigo = :codigo")
     InfoDTO getInfoByCod(@Param("codigo") String codigo);

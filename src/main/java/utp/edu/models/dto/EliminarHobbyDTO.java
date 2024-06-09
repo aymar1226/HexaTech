@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EliminarHobbyDTO {
-    private String codigoPersona;
-    private Long id_hobby;
+    private Long id_perfil_hobby;
 }

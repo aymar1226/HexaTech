@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InfoDTO {
+    private String nombres;
+    private String ap_paterno;
+    private String ap_materno;
     private String info_adicional;
     private String descripcion;
 }

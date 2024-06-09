@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EliminarHabilidadDTO {
-    private String codigoPersona;
-    private Long id_habilidad;
+    private Long id_perfil_habilidad;
 }
