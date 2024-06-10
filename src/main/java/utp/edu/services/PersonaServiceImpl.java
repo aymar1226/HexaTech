@@ -24,4 +24,9 @@ public class PersonaServiceImpl implements IPersonaService{
         return personaDao.getPersonasByGrupo(idGrupo);
     }
 
+    @Override
+    public Persona getLiderByGroup(Long idGrupo) {
+        return personaDao.findCodigoLiderByGroup(idGrupo).get();
+    }
+
 }

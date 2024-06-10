@@ -29,5 +29,9 @@ public interface PersonaDao extends JpaRepository<Persona,Long> {
             "WHERE mg.grupo.id = :idGrupo")
     List<PersonaDTO> getPersonasByGrupo(@Param("idGrupo") Long idGrupo);
 
+    @Query("SELECT p FROM Persona p "+
+            "JOIN MiembroGrupo mg ON mg.persona.id=p.id "+
+            "WHERE mg.es_lider = true AND mg.grupo.id = :idGrupo")
+    Optional<Persona> findCodigoLiderByGroup (@Param("idGrupo") Long idGrupo);
 
 }

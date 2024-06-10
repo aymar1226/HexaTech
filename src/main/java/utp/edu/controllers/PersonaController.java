@@ -31,5 +31,11 @@ public class PersonaController {
         return personaService.getPersonasByGrupo(idGrupo);
     }
 
+    @GetMapping("/lider/{idGrupo}")
+    public Persona getLiderByGroup (@PathVariable Long idGrupo){
+        System.out.println(idGrupo);
+        return personaService.getLiderByGroup(idGrupo);
+    }
+
 
 }

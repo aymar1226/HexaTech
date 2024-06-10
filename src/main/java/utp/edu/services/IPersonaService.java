@@ -9,5 +9,6 @@ public interface IPersonaService {
 
     public List<Persona> getPersonasByCurso(Long idCurso);
     public List<PersonaDTO> getPersonasByGrupo(Long idGrupo);
+    public Persona getLiderByGroup(Long idGrupo);
 
 }
