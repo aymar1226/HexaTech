@@ -8,8 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import utp.edu.models.entities.Grupo;
 import utp.edu.models.entities.Habilidad;
+import utp.edu.models.entities.PerfilHabilidad;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HabilidadDao extends JpaRepository<Habilidad,Long> {
@@ -20,6 +22,13 @@ public interface HabilidadDao extends JpaRepository<Habilidad,Long> {
             "JOIN Persona p ON p.id = pf.persona.id " +
             "WHERE p.codigo = :codigo")
     List<Habilidad> listAbilitiesByCod(@Param("codigo") String codigoPersona);
+
+    @Query("SELECT ph FROM PerfilHabilidad ph " +
+            "JOIN ph.perfil pf " +
+            "JOIN pf.persona p " +
+            "WHERE p.codigo = :codigo AND ph.habilidad.id = :idHabilidad")
+    Optional<PerfilHabilidad> findPerfilHabilidad(@Param("codigo") String codigoPersona, @Param("idHabilidad") Long idHabilidad);
+
 
     @Modifying
     @Query("DELETE FROM PerfilHabilidad ph " +

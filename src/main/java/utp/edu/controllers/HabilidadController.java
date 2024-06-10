@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utp.edu.models.dto.CrearHabilidadDTO;
+import utp.edu.models.dto.EliminarHabilidadDTO;
 import utp.edu.models.entities.Habilidad;
 import utp.edu.models.entities.PerfilHabilidad;
 import utp.edu.services.IHabilidadService;
@@ -33,13 +34,14 @@ public class HabilidadController {
         }
     }
 
-    @DeleteMapping("/eliminar/{idPerfilHabilidad}")
-    public ResponseEntity<Void> eliminarHabilidad(@PathVariable Long idPerfilHabilidad) {
+    @DeleteMapping("/eliminar")
+    public ResponseEntity<Void> eliminarHabilidad(@RequestBody EliminarHabilidadDTO eliminarHabilidadDTO) {
         try {
-            habilidadService.deletePerfilHabilidad(idPerfilHabilidad);
+            habilidadService.deletePerfilHabilidad(eliminarHabilidadDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

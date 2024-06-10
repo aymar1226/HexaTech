@@ -7,6 +7,7 @@ import utp.edu.models.dao.PerfilDao;
 import utp.edu.models.dao.PerfilHabilidadDao;
 import utp.edu.models.dao.PersonaDao;
 import utp.edu.models.dto.CrearHabilidadDTO;
+import utp.edu.models.dto.EliminarHabilidadDTO;
 import utp.edu.models.entities.Habilidad;
 import utp.edu.models.entities.Perfil;
 import utp.edu.models.entities.PerfilHabilidad;
@@ -57,7 +58,21 @@ public class HabilidadServiceImpl implements IHabilidadService {
     }
 
     @Override
-    public void deletePerfilHabilidad(Long idPerfilHabilidad) {
-        perfilHabilidadDao.deleteById(idPerfilHabilidad);
+    public void deletePerfilHabilidad(EliminarHabilidadDTO eliminarHabilidadDTO) {
+        String codigoPersona=eliminarHabilidadDTO.getCodigoPersona();
+        Long idHabilidad = eliminarHabilidadDTO.getIdHabilidad();
+        Optional<Persona> personaEncontrada = personaDao.findPersonaByCod(codigoPersona);
+        if (personaEncontrada.isPresent()) {
+            Optional<Perfil> perfilEncontrado = perfilDao.findPerfilByPersona(personaEncontrada.get().getId());
+
+            // Guardar habilidad
+            PerfilHabilidad perfilHabilidad =habilidadDao.findPerfilHabilidad(codigoPersona,idHabilidad).get();
+
+            perfilHabilidadDao.deleteById(perfilHabilidad.getId());
+        }else{
+            throw new RuntimeException("No se pudo eliminar la habilidad porque el usuario de código " + codigoPersona+ " no se encontró");
+        }
     }
+
+
 }
