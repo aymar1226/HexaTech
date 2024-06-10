@@ -10,6 +10,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 
 import javax.management.Notification;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,8 +35,12 @@ public class NotificacionServiceImpl implements INotificacionService{
         Notificacion notificacion = new Notificacion();
         notificacion.setMensaje(mensaje);
         notificacion.setGrupo(grupo);
-        notificacionDao.save(notificacion);
 
+        LocalDateTime ahora = LocalDateTime.now();
+
+        notificacion.setFecha(ahora.toLocalDate());
+        notificacion.setHora(ahora.toLocalTime());
+        notificacionDao.save(notificacion);
 
         return notificacion ;
     }
