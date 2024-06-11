@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface INotificacionService {
 
-    public Notificacion crearNotification(Long grupoId, String mensaje);
+    public Notificacion crearNotification(Long grupoId, Notificacion notificacion);
     public List<Notificacion> getNotificationsByGroup(Long groupId);
 
     }

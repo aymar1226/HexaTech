@@ -16,8 +16,8 @@ public class NotificacionRestController {
     private INotificacionService service;
 
     @PostMapping("/api/grupos/{grupoId}/alertas")
-    public ResponseEntity<?> crearAlerta(@PathVariable Long grupoId, @RequestBody String mensaje) {
-        service.crearNotification(grupoId, mensaje);
+    public ResponseEntity<?> crearAlerta(@PathVariable Long grupoId, @RequestBody Notificacion notificacion) {
+        service.crearNotification(grupoId, notificacion);
         return ResponseEntity.ok().build();
     }
 

@@ -29,17 +29,10 @@ public class NotificacionServiceImpl implements INotificacionService{
 
 
     @Override
-    public Notificacion crearNotification(Long grupoId, String mensaje) {
+    public Notificacion crearNotification(Long grupoId, Notificacion notificacion) {
 
         Grupo grupo = grupoDao.findById(grupoId).get();
-        Notificacion notificacion = new Notificacion();
-        notificacion.setMensaje(mensaje);
         notificacion.setGrupo(grupo);
-
-        LocalDateTime ahora = LocalDateTime.now();
-
-        notificacion.setFecha(ahora.toLocalDate());
-        notificacion.setHora(ahora.toLocalTime());
         notificacionDao.save(notificacion);
 
         return notificacion ;
