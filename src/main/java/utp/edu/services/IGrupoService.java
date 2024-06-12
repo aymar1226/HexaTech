@@ -11,12 +11,10 @@ import java.util.List;
 public interface IGrupoService {
 
     public List<Grupo> getGruposByCodPersona(String codigoPersona);
-
     public Grupo crearGrupo(CrearGrupoDTO grupoDTO);
     public void deleteMiembro(MiembroDTO miembroDTO);
     public MiembroGrupo updateMiembro(UpdateMiembroDTO updateMiembroDTO);
     public MiembroGrupo agregarMiembroAlGrupo(MiembroDTO miembroDTO);
-
     String getRolInGroup(Long grupoId, String codigoPersona);
 
 

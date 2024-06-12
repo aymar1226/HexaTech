@@ -7,16 +7,14 @@ import utp.edu.models.dao.NotificacionDao;
 import utp.edu.models.entities.Grupo;
 import utp.edu.models.entities.Notificacion;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-
-
-import javax.management.Notification;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class NotificacionServiceImpl implements INotificacionService{
+public class NotificacionServiceImpl implements INotificacionService {
 
     private final SimpMessagingTemplate messagingTemplate;
+
     public NotificacionServiceImpl(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
@@ -26,16 +24,12 @@ public class NotificacionServiceImpl implements INotificacionService{
     @Autowired
     private GrupoDao grupoDao;
 
-
-
     @Override
     public Notificacion crearNotification(Long grupoId, Notificacion notificacion) {
-
         Grupo grupo = grupoDao.findById(grupoId).get();
         notificacion.setGrupo(grupo);
         notificacionDao.save(notificacion);
-
-        return notificacion ;
+        return notificacion;
     }
 
     @Override
@@ -43,5 +37,15 @@ public class NotificacionServiceImpl implements INotificacionService{
         return notificacionDao.findByGroupId(groupId);
     }
 
+    @Override
+    public void pinNotification(Long notificationId, boolean isPinned) {
+        Notificacion notificacion = notificacionDao.findById(notificationId).get();
+        notificacion.setPinned(isPinned);
+        notificacionDao.save(notificacion);
+    }
 
+    @Override
+    public Optional<Notificacion> getPinnedNotificationByGroup(Long groupId) {
+        return notificacionDao.findPinnedNotificationByGroupId(groupId);
+    }
 }

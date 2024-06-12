@@ -9,7 +9,6 @@ import utp.edu.models.dto.NotificacionDTO;
 import utp.edu.models.entities.Notificacion;
 import utp.edu.services.INotificacionService;
 
-
 @Controller
 public class NotificationController {
     @Autowired
@@ -17,11 +16,8 @@ public class NotificationController {
 
     @MessageMapping("/notificacion/{roomId}")
     @SendTo("/topic/{roomId}")
-    public NotificacionDTO sendNotification(@DestinationVariable String roomId,NotificacionDTO notificacion) {
+    public NotificacionDTO sendNotification(@DestinationVariable String roomId, NotificacionDTO notificacion) {
         // Aquí puedes agregar lógica adicional si es necesario
-
-        return new NotificacionDTO(notificacion.getMensaje(),notificacion.getId_grupo());
+        return new NotificacionDTO(notificacion.getMensaje(), notificacion.getId_grupo(), notificacion.isPinned());
     }
-
-
 }

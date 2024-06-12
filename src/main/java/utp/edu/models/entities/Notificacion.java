@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "notificacion")
@@ -27,4 +25,5 @@ public class Notificacion {
     @ManyToOne
     @JoinColumn(name = "id_grupo")
     private Grupo grupo;
+    private boolean isPinned; // Nuevo campo para indicar si la notificación está anclada
 }
