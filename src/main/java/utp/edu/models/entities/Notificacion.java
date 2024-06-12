@@ -25,5 +25,5 @@ public class Notificacion {
     @ManyToOne
     @JoinColumn(name = "id_grupo")
     private Grupo grupo;
-    private boolean isPinned; // Nuevo campo para indicar si la notificación está anclada
+    private boolean isPinned;
 }

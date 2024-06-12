@@ -9,4 +9,5 @@ public interface INotificacionService {
     List<Notificacion> getNotificationsByGroup(Long groupId);
     void pinNotification(Long notificationId, boolean isPinned);
     Optional<Notificacion> getPinnedNotificationByGroup(Long groupId);
+    Optional<Notificacion> getNotificationById(Long notificationId); // Nuevo método
 }

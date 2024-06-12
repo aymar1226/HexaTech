@@ -48,4 +48,9 @@ public class NotificacionServiceImpl implements INotificacionService {
     public Optional<Notificacion> getPinnedNotificationByGroup(Long groupId) {
         return notificacionDao.findPinnedNotificationByGroupId(groupId);
     }
+
+    @Override
+    public Optional<Notificacion> getNotificationById(Long notificationId) {
+        return notificacionDao.findById(notificationId);
+    }
 }
