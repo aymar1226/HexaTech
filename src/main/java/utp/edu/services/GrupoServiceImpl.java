@@ -2,16 +2,11 @@ package utp.edu.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import utp.edu.models.dao.CursoDao;
-import utp.edu.models.dao.GrupoDao;
-import utp.edu.models.dao.MiembroGrupoDao;
-import utp.edu.models.dao.PersonaDao;
+import utp.edu.models.dao.*;
 import utp.edu.models.dto.CrearGrupoDTO;
 import utp.edu.models.dto.MiembroDTO;
 import utp.edu.models.dto.UpdateMiembroDTO;
-import utp.edu.models.entities.Grupo;
-import utp.edu.models.entities.MiembroGrupo;
-import utp.edu.models.entities.Persona;
+import utp.edu.models.entities.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -36,6 +31,9 @@ public class GrupoServiceImpl implements IGrupoService {
 
     @Autowired
     private IConversacionGrupalService conversacionGrupalService;
+
+    @Autowired
+    private DocenteCursoDao docenteCursoDao;
 
     @Override
     public List<Grupo> getGruposByCodPersona(String codigoPersona) {
@@ -81,6 +79,18 @@ public class GrupoServiceImpl implements IGrupoService {
                         System.err.println("El miembro con código " + codigoMiembro + " no se pudo encontrar. Se omitirá.");
                     }
                 }
+            }
+
+            // Asignar docente al grupo
+            Optional<DocenteCurso> docenteCurso = docenteCursoDao.findByCursoId(grupoDTO.getIdCurso());
+            if (docenteCurso.isPresent()) {
+                Docente docente = docenteCurso.get().getDocente();
+                MiembroGrupo docenteGrupo = new MiembroGrupo();
+                docenteGrupo.setEs_lider(false);
+                docenteGrupo.setGrupo(grupoGuardado);
+                docenteGrupo.setPersona(docente.getPersona());
+                docenteGrupo.setRol("Docente");
+                miembroGrupoDao.save(docenteGrupo);
             }
 
             // Crear conversación grupal asociada

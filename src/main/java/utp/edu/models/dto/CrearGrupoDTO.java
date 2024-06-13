@@ -15,5 +15,6 @@ public class CrearGrupoDTO {
     private Long idCurso;
     private String nombregrupo;
     private List<String> codigosMiembros;
+    private String codigoDocente;
 
 }
