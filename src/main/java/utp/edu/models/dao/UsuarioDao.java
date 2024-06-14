@@ -14,5 +14,4 @@ public interface UsuarioDao extends JpaRepository<Usuario,Long> {
 
     @Query("SELECT u FROM Usuario u WHERE u.persona.codigo = :codigo AND u.password = :password")
     Optional<Usuario> findByPersonaCodigoAndPassword(@Param("codigo") String codigo, @Param("password") String password);
-
 }

@@ -13,6 +13,7 @@ import utp.edu.models.entities.Notificacion;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import utp.edu.models.entities.Persona;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,17 +46,21 @@ public class NotificacionServiceImpl implements INotificacionService {
 //        Optional<Persona> lider = personaDao.findCodigoLiderByGroup(grupoId);
 //        String codigoLider = lider.get().getCodigo();
 
-        List<PersonaDTO> listaGrupo=personaDao.getPersonasByGrupo(notificacion.getGrupo().getId());
+        List<PersonaDTO> listaGrupo = personaDao.getPersonasByGrupo(notificacion.getGrupo().getId());
 
-        for (PersonaDTO miembro : listaGrupo){
-            SimpleMailMessage message = new SimpleMailMessage();
- //         message.setFrom(codigoLider+"@utp.edu.pe");
-            message.setTo(miembro.getCodigo()+"@utp.edu.pe");
-            message.setSubject("Nueva alerta de tu grupo '"+notificacion.getGrupo().getNombre()+"' del curso '"+notificacion.getGrupo().getCurso().getNombre()+"'");
-            message.setText(notificacion.getMensaje());
-            mailSender.send(message);
+        List<String> emails = new ArrayList<>();
+        for (PersonaDTO miembro : listaGrupo) {
+            emails.add(miembro.getCodigo() + "@utp.edu.pe");
         }
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        // message.setFrom(codigoLider + "@utp.edu.pe");
+        message.setTo(emails.toArray(new String[0]));
+        message.setSubject("Nueva alerta de tu grupo '" + notificacion.getGrupo().getNombre() + "' del curso '" + notificacion.getGrupo().getCurso().getNombre() + "'");
+        message.setText(notificacion.getMensaje());
+        mailSender.send(message);
         return notificacion;
+
     }
 
     @Override
