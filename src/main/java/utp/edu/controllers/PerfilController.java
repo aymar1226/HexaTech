@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import utp.edu.models.dto.ActualizarDescripcionDTO;
 import utp.edu.models.dto.ActualizarInfoAdicionalDTO;
 import utp.edu.models.dto.InfoDTO;
 import utp.edu.services.IPerfilService;
@@ -30,6 +31,17 @@ public class PerfilController {
         try {
             actualizarInfoAdicionalDTO.setCodigoPersona(codigo);
             perfilService.actualizarInfoAdicional(actualizarInfoAdicionalDTO);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/actualizar-descripcion/{codigo}")
+    public ResponseEntity<Void> actualizarDescripcion(@PathVariable String codigo, @RequestBody ActualizarDescripcionDTO actualizarDescripcionDTO) {
+        try {
+            actualizarDescripcionDTO.setCodigoPersona(codigo);
+            perfilService.actualizarDescripcion(actualizarDescripcionDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

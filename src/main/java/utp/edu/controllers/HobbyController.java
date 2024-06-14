@@ -27,7 +27,7 @@ public class HobbyController {
     @PostMapping("/crear/{codigo}")
     public ResponseEntity<PerfilHobby> crearHobby(@PathVariable String codigo, @RequestBody CrearHobbyDTO crearHobbyDTO) {
         try {
-            crearHobbyDTO.setCodigoPersona(codigo);  // Set the codigoPersona from the path variable
+            crearHobbyDTO.setCodigoPersona(codigo);
             PerfilHobby nuevoHobby = hobbyService.crearHobby(crearHobbyDTO);
             return new ResponseEntity<>(nuevoHobby, HttpStatus.CREATED);
         } catch (Exception e) {
