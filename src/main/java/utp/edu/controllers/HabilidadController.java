@@ -24,9 +24,10 @@ public class HabilidadController {
         return habilidadService.listAbilitiesByCod(codigo);
     }
 
-    @PostMapping("/crear")
-    public ResponseEntity<PerfilHabilidad> crearHabilidad(@RequestBody CrearHabilidadDTO crearHabilidadDTO) {
+    @PostMapping("/crear/{codigo}")
+    public ResponseEntity<PerfilHabilidad> crearHabilidad(@PathVariable String codigo, @RequestBody CrearHabilidadDTO crearHabilidadDTO) {
         try {
+            crearHabilidadDTO.setCodigoPersona(codigo);  // Set the codigoPersona from the path variable
             PerfilHabilidad nuevaHabilidad = habilidadService.crearHabilidad(crearHabilidadDTO);
             return new ResponseEntity<>(nuevaHabilidad, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -43,5 +44,4 @@ public class HabilidadController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utp.edu.models.dao.PerfilDao;
 import utp.edu.models.dao.PersonaDao;
+import utp.edu.models.dto.ActualizarInfoAdicionalDTO;
 import utp.edu.models.dto.InfoDTO;
-import utp.edu.models.dto.UpdateInfoDTO;
 import utp.edu.models.entities.Perfil;
 import utp.edu.models.entities.Persona;
 
@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Service
 public class PerfilServiceImpl implements IPerfilService {
+
     @Autowired
     private PerfilDao perfilDao;
 
@@ -20,23 +21,41 @@ public class PerfilServiceImpl implements IPerfilService {
     private PersonaDao personaDao;
 
     @Override
-    public InfoDTO getInfoByCod(String codigoPersona) {
-
-        return perfilDao.getInfoByCod(codigoPersona);
+    public InfoDTO getInfo(String codigoPersona) {
+        Optional<Persona> persona = personaDao.findPersonaByCod(codigoPersona);
+        if (persona.isPresent()) {
+            Optional<Perfil> perfil = perfilDao.findPerfilByPersona(persona.get().getId());
+            if (perfil.isPresent()) {
+                Perfil p = perfil.get();
+                return new InfoDTO(
+                        p.getPersona().getNombres(),
+                        p.getPersona().getAp_paterno(),
+                        p.getPersona().getAp_materno(),
+                        p.getInfoAdicional(),  // Ensure the field name matches your entity
+                        p.getDescripcion()
+                );
+            } else {
+                throw new RuntimeException("Perfil no encontrado para la persona con código " + codigoPersona);
+            }
+        } else {
+            throw new RuntimeException("Persona no encontrada con código " + codigoPersona);
+        }
     }
 
     @Override
-    public Perfil updateInfo(String codigo,InfoDTO infoDTO) {
-
-        Optional<Persona> personaEncontrada = personaDao.findPersonaByCod(codigo);
-        if(personaEncontrada.isPresent()) {
-            Optional<Perfil> perfilEncontrado = perfilDao.findPerfilByPersona(personaEncontrada.get().getId());
-            Perfil perfil = perfilEncontrado.get();
-            perfil.setDescripcion(infoDTO.getDescripcion());
-            perfil.setInfo_adicional(infoDTO.getInfo_adicional());
-            return perfilDao.save(perfil);
-        }else {
-            throw new RuntimeException("No se pudo actualizar la informacion porque el usuario de codigo "+ codigo+" no se encontro") ;
+    public void actualizarInfoAdicional(ActualizarInfoAdicionalDTO actualizarInfoAdicionalDTO) {
+        Optional<Persona> persona = personaDao.findPersonaByCod(actualizarInfoAdicionalDTO.getCodigoPersona());
+        if (persona.isPresent()) {
+            Optional<Perfil> perfil = perfilDao.findPerfilByPersona(persona.get().getId());
+            if (perfil.isPresent()) {
+                Perfil p = perfil.get();
+                p.setInfoAdicional(actualizarInfoAdicionalDTO.getInfoAdicional());  // Ensure the field name matches your entity
+                perfilDao.save(p);
+            } else {
+                throw new RuntimeException("Perfil no encontrado para la persona con código " + actualizarInfoAdicionalDTO.getCodigoPersona());
+            }
+        } else {
+            throw new RuntimeException("Persona no encontrada con código " + actualizarInfoAdicionalDTO.getCodigoPersona());
         }
     }
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EliminarHobbyDTO {
-    private Long idHobby;
+public class ActualizarInfoAdicionalDTO {
     private String codigoPersona;
+    private String infoAdicional;
 }

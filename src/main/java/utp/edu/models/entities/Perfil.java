@@ -16,10 +16,9 @@ public class Perfil {
     @Column(name = "id_perfil", nullable = false)
     private Long id;
     private String descripcion;
-    private String info_adicional;
+    private String infoAdicional;  // Ensure the field name matches your DTO
 
     @OneToOne
     @JoinColumn(name="id_persona")
     private Persona persona;
-
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utp.edu.models.dto.CrearHobbyDTO;
+import utp.edu.models.dto.EliminarHobbyDTO;
 import utp.edu.models.entities.Hobby;
 import utp.edu.models.entities.PerfilHobby;
 import utp.edu.services.IHobbyService;
@@ -12,20 +13,21 @@ import utp.edu.services.IHobbyService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/hobby")
+@RequestMapping("/api/hobby")
 public class HobbyController {
 
     @Autowired
-    private IHobbyService hobbyService;
+    IHobbyService hobbyService;
 
     @GetMapping("/lista/{codigo}")
-    public List<Hobby> listHobbiesByCod(@PathVariable String codigo) {
+    public List<Hobby> listHobbiesByPerson(@PathVariable String codigo) {
         return hobbyService.listHobbiesByCod(codigo);
     }
 
-    @PostMapping("/crear")
-    public ResponseEntity<PerfilHobby> crearHobby(@RequestBody CrearHobbyDTO crearHobbyDTO) {
+    @PostMapping("/crear/{codigo}")
+    public ResponseEntity<PerfilHobby> crearHobby(@PathVariable String codigo, @RequestBody CrearHobbyDTO crearHobbyDTO) {
         try {
+            crearHobbyDTO.setCodigoPersona(codigo);  // Set the codigoPersona from the path variable
             PerfilHobby nuevoHobby = hobbyService.crearHobby(crearHobbyDTO);
             return new ResponseEntity<>(nuevoHobby, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -33,10 +35,10 @@ public class HobbyController {
         }
     }
 
-    @DeleteMapping("/eliminar/{idPerfilHobby}")
-    public ResponseEntity<Void> eliminarHobby(@PathVariable Long idPerfilHobby) {
+    @DeleteMapping("/eliminar")
+    public ResponseEntity<Void> eliminarHobby(@RequestBody EliminarHobbyDTO eliminarHobbyDTO) {
         try {
-            hobbyService.deletePerfilHobby(idPerfilHobby);
+            hobbyService.deletePerfilHobby(eliminarHobbyDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

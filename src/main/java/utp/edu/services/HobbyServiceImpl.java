@@ -7,6 +7,7 @@ import utp.edu.models.dao.PerfilDao;
 import utp.edu.models.dao.PerfilHobbyDao;
 import utp.edu.models.dao.PersonaDao;
 import utp.edu.models.dto.CrearHobbyDTO;
+import utp.edu.models.dto.EliminarHobbyDTO;
 import utp.edu.models.entities.Hobby;
 import utp.edu.models.entities.Perfil;
 import utp.edu.models.entities.PerfilHobby;
@@ -41,23 +42,44 @@ public class HobbyServiceImpl implements IHobbyService {
         if (personaEncontrada.isPresent()) {
             Optional<Perfil> perfilEncontrado = perfilDao.findPerfilByPersona(personaEncontrada.get().getId());
 
-            // Guardar hobby
-            Hobby nuevoHobby = new Hobby();
-            nuevoHobby.setNombre(crearHobbyDTO.getNom_hobby());
-            hobbyDao.save(nuevoHobby);
+            if (perfilEncontrado.isPresent()) {
+                // Guardar hobby
+                Hobby nuevoHobby = new Hobby();
+                nuevoHobby.setNombre(crearHobbyDTO.getNom_hobby());
+                hobbyDao.save(nuevoHobby);
 
-            // Guardar relación
-            PerfilHobby perfilHobby = new PerfilHobby();
-            perfilHobby.setPerfil(perfilEncontrado.get());
-            perfilHobby.setHobby(nuevoHobby);
+                // Guardar relación
+                PerfilHobby perfilHobby = new PerfilHobby();
+                perfilHobby.setPerfil(perfilEncontrado.get());
+                perfilHobby.setHobby(nuevoHobby);
 
-            return perfilHobbyDao.save(perfilHobby);
+                return perfilHobbyDao.save(perfilHobby);
+            } else {
+                throw new RuntimeException("Perfil no encontrado para la persona con código " + crearHobbyDTO.getCodigoPersona());
+            }
         }
         throw new RuntimeException("No se pudo agregar el hobby porque el usuario de código " + crearHobbyDTO.getCodigoPersona() + " no se encontró");
     }
 
     @Override
-    public void deletePerfilHobby(Long idPerfilHobby) {
-        perfilHobbyDao.deleteById(idPerfilHobby);
+    public void deletePerfilHobby(EliminarHobbyDTO eliminarHobbyDTO) {
+        String codigoPersona = eliminarHobbyDTO.getCodigoPersona();
+        Long idHobby = eliminarHobbyDTO.getIdHobby();
+        Optional<Persona> personaEncontrada = personaDao.findPersonaByCod(codigoPersona);
+        if (personaEncontrada.isPresent()) {
+            Optional<Perfil> perfilEncontrado = perfilDao.findPerfilByPersona(personaEncontrada.get().getId());
+
+            if (perfilEncontrado.isPresent()) {
+                // Eliminar hobby
+                PerfilHobby perfilHobby = hobbyDao.findPerfilHobby(codigoPersona, idHobby).orElseThrow(() ->
+                        new RuntimeException("Hobby no encontrado para el usuario con código " + codigoPersona));
+
+                perfilHobbyDao.deleteById(perfilHobby.getId());
+            } else {
+                throw new RuntimeException("Perfil no encontrado para la persona con código " + codigoPersona);
+            }
+        } else {
+            throw new RuntimeException("No se pudo eliminar el hobby porque el usuario de código " + codigoPersona + " no se encontró");
+        }
     }
 }

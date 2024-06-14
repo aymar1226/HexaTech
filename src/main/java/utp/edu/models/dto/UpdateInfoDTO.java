@@ -5,10 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class UpdateInfoDTO {
-    private String codPersona;
-    private String info_adicional;
-    private String descripcion;
+    private String codigoPersona;
+    private String infoAdicional;
 }

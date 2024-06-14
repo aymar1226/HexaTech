@@ -24,5 +24,4 @@ public class PerfilHobby {
     @ManyToOne
     @JoinColumn(name = "id_hobby")
     private Hobby hobby;
-
 }

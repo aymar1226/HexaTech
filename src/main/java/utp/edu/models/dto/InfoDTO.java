@@ -11,6 +11,6 @@ public class InfoDTO {
     private String nombres;
     private String ap_paterno;
     private String ap_materno;
-    private String info_adicional;
+    private String infoAdicional;  // Ensure the field name matches your entity
     private String descripcion;
 }

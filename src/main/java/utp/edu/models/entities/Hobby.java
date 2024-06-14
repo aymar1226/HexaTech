@@ -15,6 +15,7 @@ public class Hobby {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_hobby", nullable = false)
     private Long id;
+
     @Column(name = "nom_hobby")
     private String nombre;
 }

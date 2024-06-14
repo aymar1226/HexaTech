@@ -42,37 +42,44 @@ public class HabilidadServiceImpl implements IHabilidadService {
         if (personaEncontrada.isPresent()) {
             Optional<Perfil> perfilEncontrado = perfilDao.findPerfilByPersona(personaEncontrada.get().getId());
 
-            // Guardar habilidad
-            Habilidad nuevaHabilidad = new Habilidad();
-            nuevaHabilidad.setNombre(crearHabilidadDTO.getNom_habilidad());
-            habilidadDao.save(nuevaHabilidad);
+            if (perfilEncontrado.isPresent()) {
+                // Guardar habilidad
+                Habilidad nuevaHabilidad = new Habilidad();
+                nuevaHabilidad.setNombre(crearHabilidadDTO.getNom_habilidad());
+                habilidadDao.save(nuevaHabilidad);
 
-            // Guardar relación
-            PerfilHabilidad perfilHabilidad = new PerfilHabilidad();
-            perfilHabilidad.setPerfil(perfilEncontrado.get());
-            perfilHabilidad.setHabilidad(nuevaHabilidad);
+                // Guardar relación
+                PerfilHabilidad perfilHabilidad = new PerfilHabilidad();
+                perfilHabilidad.setPerfil(perfilEncontrado.get());
+                perfilHabilidad.setHabilidad(nuevaHabilidad);
 
-            return perfilHabilidadDao.save(perfilHabilidad);
+                return perfilHabilidadDao.save(perfilHabilidad);
+            } else {
+                throw new RuntimeException("Perfil no encontrado para la persona con código " + crearHabilidadDTO.getCodigoPersona());
+            }
         }
         throw new RuntimeException("No se pudo agregar la habilidad porque el usuario de código " + crearHabilidadDTO.getCodigoPersona() + " no se encontró");
     }
 
     @Override
     public void deletePerfilHabilidad(EliminarHabilidadDTO eliminarHabilidadDTO) {
-        String codigoPersona=eliminarHabilidadDTO.getCodigoPersona();
+        String codigoPersona = eliminarHabilidadDTO.getCodigoPersona();
         Long idHabilidad = eliminarHabilidadDTO.getIdHabilidad();
         Optional<Persona> personaEncontrada = personaDao.findPersonaByCod(codigoPersona);
         if (personaEncontrada.isPresent()) {
             Optional<Perfil> perfilEncontrado = perfilDao.findPerfilByPersona(personaEncontrada.get().getId());
 
-            // Guardar habilidad
-            PerfilHabilidad perfilHabilidad =habilidadDao.findPerfilHabilidad(codigoPersona,idHabilidad).get();
+            if (perfilEncontrado.isPresent()) {
+                // Eliminar habilidad
+                PerfilHabilidad perfilHabilidad = habilidadDao.findPerfilHabilidad(codigoPersona, idHabilidad).orElseThrow(() ->
+                        new RuntimeException("Habilidad no encontrada para el usuario con código " + codigoPersona));
 
-            perfilHabilidadDao.deleteById(perfilHabilidad.getId());
-        }else{
-            throw new RuntimeException("No se pudo eliminar la habilidad porque el usuario de código " + codigoPersona+ " no se encontró");
+                perfilHabilidadDao.deleteById(perfilHabilidad.getId());
+            } else {
+                throw new RuntimeException("Perfil no encontrado para la persona con código " + codigoPersona);
+            }
+        } else {
+            throw new RuntimeException("No se pudo eliminar la habilidad porque el usuario de código " + codigoPersona + " no se encontró");
         }
     }
-
-
 }
