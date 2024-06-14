@@ -18,6 +18,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
         String codigo=creds.getCodUsuario();
         String password=creds.getPassword();
+        String rol= creds.getRol();
         return usuarioDao.findByPersonaCodigoAndPassword(codigo,password);
     }
 }

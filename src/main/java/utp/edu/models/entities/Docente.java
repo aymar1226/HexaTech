@@ -17,7 +17,7 @@ public class Docente {
     @Column(name = "id_docente", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_persona")
     private Persona persona;
 }

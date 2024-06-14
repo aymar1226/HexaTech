@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class CredsDTO {
     String codUsuario;
     String password;
+    String rol;
 }

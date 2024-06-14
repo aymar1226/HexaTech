@@ -31,6 +31,7 @@ public class NotificacionRestController {
         return service.getNotificationsByGroup(groupId);
     }
 
+
     @PostMapping("/pin/{notificationId}")
     public ResponseEntity<?> pinNotification(@PathVariable Long notificationId, @RequestParam boolean isPinned) {
         service.pinNotification(notificationId, isPinned);
@@ -44,9 +45,11 @@ public class NotificacionRestController {
         return ResponseEntity.ok().build();
     }
 
+
     @GetMapping("/group/{groupId}/pinned")
     public ResponseEntity<Notificacion> getPinnedNotificationByGroup(@PathVariable Long groupId) {
         Optional<Notificacion> notificacion = service.getPinnedNotificationByGroup(groupId);
         return notificacion.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
     }
+
 }

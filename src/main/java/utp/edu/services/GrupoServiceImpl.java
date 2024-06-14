@@ -81,7 +81,7 @@ public class GrupoServiceImpl implements IGrupoService {
                 }
             }
 
-            // Asignar docente al grupo
+           /* // Asignar docente al grupo
             Optional<DocenteCurso> docenteCurso = docenteCursoDao.findByCursoId(grupoDTO.getIdCurso());
             if (docenteCurso.isPresent()) {
                 Docente docente = docenteCurso.get().getDocente();
@@ -91,7 +91,7 @@ public class GrupoServiceImpl implements IGrupoService {
                 docenteGrupo.setPersona(docente.getPersona());
                 docenteGrupo.setRol("Docente");
                 miembroGrupoDao.save(docenteGrupo);
-            }
+            }*/
 
             // Crear conversación grupal asociada
             conversacionGrupalService.iniciarConversacion(grupoGuardado.getId());
